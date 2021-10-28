@@ -101,27 +101,34 @@ $('#izmeniForm').submit(function () {
     const serializedData = $form.serialize();
     console.log(serializedData);
     $inputs.prop('disabled', true);
-
-    // kreirati request za UPDATE handler
-
-    request.done(function (response, textStatus, jqXHR) {
-
-
-        if (response === 'Success') {
-            console.log('Kolokvijum je izmenjen');
-            location.reload(true);
-            //$('#izmeniForm').reset;
-        }
-        else console.log('Kolokvijum nije izmenjen ' + response);
-        console.log(response);
+   
+    request = $.ajax({
+        url: 'handler/update.php',
+        type: 'post',
+        data:serializedData
+      
     });
+   
+     request.done(function(response, textStatus, jqXHR) {
+       
+          if (response ='Success') {
+                console.log('Kolokvijum je izmenjen');
+                alert('Kolokvijum je izmenjen');
+                location.reload(true);
+                $('#izmeniForm').reset;
+            }
+            else  {console.log('Kolokvijum nije izmenjen ' + response);
+            alert('Kolokvijum nije izmenjen');
+        }
+            console.log(response);
+        });
+    
 
     request.fail(function (jqXHR, textStatus, errorThrown) {
         console.error('The following error occurred: ' + textStatus, errorThrown);
     });
 
-
-    //$('#izmeniModal').modal('hide');
+$('#izmeniModal').modal('hide');
 });
 
 $('#btn-pretraga').click(function () {
